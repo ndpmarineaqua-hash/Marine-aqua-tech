@@ -744,4 +744,4 @@ class _AddPondScreenState extends State<AddPondScreen> {
             : locationController.text.trim(),
         area: areaController.text.trim().isEmpty
             ? 'Not specified'
-            : areaCont
+       controller: areaController,
