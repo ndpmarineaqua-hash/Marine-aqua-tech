@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MarineAquaTechApp());
+void main() {
+  runApp(const MarineAquaTechApp());
+}
 
 const primary = Color(0xFF0879B8);
 const teal = Color(0xFF0FA7A0);
@@ -15,85 +17,22 @@ class MarineAquaTechApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Marine Aqua Tech',
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: primary),
         scaffoldBackgroundColor: const Color(0xFFF4FAFC),
-        useMaterial3: true,
-        fontFamily: 'Roboto',
       ),
-      home: const SplashScreen(),
+      home: const LoginScreen(),
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
-        );
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF006FAE), Color(0xFF0AA6A0)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.waves, size: 82, color: Colors.white),
-              const SizedBox(height: 18),
-              const Text(
-                'MARINE\nAQUA TECH',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 34,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Smart Aquaculture. Better Results.',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(.9),
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+/* ---------------- LOGIN ---------------- */
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final phone = TextEditingController();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -101,50 +40,55 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.water_drop, color: primary, size: 58),
-              const SizedBox(height: 12),
-              const Text('Welcome',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
-              const SizedBox(height: 6),
-              const Text('Login to continue'),
-              const SizedBox(height: 28),
+              const Icon(Icons.water_drop, size: 70, color: primary),
+              const SizedBox(height: 15),
+              const Text(
+                'MARINE AQUA TECH',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: dark,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text('Smart Aquaculture. Better Results.'),
+              const SizedBox(height: 30),
               TextField(
-                controller: phone,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                  prefixText: '+91  ',
-                  labelText: 'Mobile number',
+                  labelText: 'Mobile Number',
+                  prefixText: '+91 ',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 15),
               SizedBox(
                 width: double.infinity,
                 height: 52,
                 child: FilledButton(
-                  onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const AppShell()),
-                  ),
-                  child: const Text('Send OTP'),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AppShell(),
+                      ),
+                    );
+                  },
+                  child: const Text('Login / Continue'),
                 ),
               ),
-              const SizedBox(height: 18),
-              const Text('or'),
               const SizedBox(height: 12),
-              OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.g_mobiledata),
-                label: const Text('Continue with Google'),
-              ),
-              const SizedBox(height: 18),
               TextButton(
-                onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AppShell()),
-                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const AppShell(),
+                    ),
+                  );
+                },
                 child: const Text('Demo Login'),
               ),
             ],
@@ -155,8 +99,11 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
+/* ---------------- APP SHELL ---------------- */
+
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
+
   @override
   State<AppShell> createState() => _AppShellState();
 }
@@ -178,27 +125,60 @@ class _AppShellState extends State<AppShell> {
       body: pages[index],
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
-        onDestinationSelected: (i) => setState(() => index = i),
+        onDestinationSelected: (value) {
+          setState(() {
+            index = value;
+          });
+        },
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.water_outlined), selectedIcon: Icon(Icons.water), label: 'Ponds'),
-          NavigationDestination(icon: Icon(Icons.inventory_2_outlined), selectedIcon: Icon(Icons.inventory_2), label: 'Products'),
-          NavigationDestination(icon: Icon(Icons.support_agent_outlined), selectedIcon: Icon(Icons.support_agent), label: 'Support'),
-          NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Profile'),
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.water_outlined),
+            selectedIcon: Icon(Icons.water),
+            label: 'Ponds',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.inventory_2_outlined),
+            selectedIcon: Icon(Icons.inventory_2),
+            label: 'Products',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.support_agent_outlined),
+            selectedIcon: Icon(Icons.support_agent),
+            label: 'Support',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );
   }
 }
 
+/* ---------------- HOME ---------------- */
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  void open(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => page),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
+        padding: const EdgeInsets.all(18),
         children: [
           Row(
             children: [
@@ -206,69 +186,162 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Hello, Farmer 👋', style: TextStyle(color: dark)),
-                    Text('Healthy Ponds. Profitable Farming.',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                    Text(
+                      'Hello, Farmer 👋',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: dark,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Healthy Ponds.\nProfitable Farming.',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none)),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notifications_none, size: 32),
+              ),
             ],
           ),
-          const SizedBox(height: 18),
+
+          const SizedBox(height: 20),
+
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [primary, teal]),
-              borderRadius: BorderRadius.circular(22),
+              gradient: const LinearGradient(
+                colors: [primary, teal],
+              ),
+              borderRadius: BorderRadius.circular(25),
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('STRONGER SHRIMP\nBRIGHTER TOMORROWS',
-                    style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
-                SizedBox(height: 8),
-                Text('Manage your pond with Marine Aqua Tech.',
-                    style: TextStyle(color: Colors.white70)),
+                Text(
+                  'STRONGER SHRIMP\nBRIGHTER TOMORROWS',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Manage your pond with Marine Aqua Tech.',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 18),
+
+          const SizedBox(height: 20),
+
           GridView.count(
             crossAxisCount: 3,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            children: const [
-              QuickCard(Icons.water, 'My Ponds'),
-              QuickCard(Icons.inventory_2, 'Products'),
-              QuickCard(Icons.science, 'Water Test'),
-              QuickCard(Icons.menu_book, 'Pond Diary'),
-              QuickCard(Icons.support_agent, 'Support'),
-              QuickCard(Icons.location_on, 'Dealers'),
+            mainAxisSpacing: 10,
+            children: [
+              ActionCard(
+                icon: Icons.water,
+                title: 'My Ponds',
+                onTap: () => open(
+                  context,
+                  const PondsScreen(),
+                ),
+              ),
+              ActionCard(
+                icon: Icons.inventory_2,
+                title: 'Products',
+                onTap: () => open(
+                  context,
+                  const ProductsScreen(),
+                ),
+              ),
+              ActionCard(
+                icon: Icons.science,
+                title: 'Water Test',
+                onTap: () => open(
+                  context,
+                  const WaterTestScreen(),
+                ),
+              ),
+              ActionCard(
+                icon: Icons.menu_book,
+                title: 'Pond Diary',
+                onTap: () => open(
+                  context,
+                  const PondDiaryScreen(),
+                ),
+              ),
+              ActionCard(
+                icon: Icons.support_agent,
+                title: 'Support',
+                onTap: () => open(
+                  context,
+                  const SupportScreen(),
+                ),
+              ),
+              ActionCard(
+                icon: Icons.location_on,
+                title: 'Dealers',
+                onTap: () => open(
+                  context,
+                  const DealersScreen(),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 18),
-          const SectionTitle('Today’s Pond Snapshot'),
-          const SizedBox(height: 10),
+
+          const SizedBox(height: 25),
+
+          const Text(
+            "Today's Pond Snapshot",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
           const Row(
             children: [
-              MetricCard('pH', '7.8', Icons.science),
+              Expanded(
+                child: MetricCard(
+                  title: 'pH',
+                  value: '7.8',
+                  icon: Icons.science,
+                ),
+              ),
               SizedBox(width: 10),
-              MetricCard('DO', '5.6 ppm', Icons.bubble_chart),
+              Expanded(
+                child: MetricCard(
+                  title: 'DO',
+                  value: '5.6 ppm',
+                  icon: Icons.bubble_chart,
+                ),
+              ),
               SizedBox(width: 10),
-              MetricCard('Salinity', '18 ppt', Icons.waves),
+              Expanded(
+                child: MetricCard(
+                  title: 'Salinity',
+                  value: '18 ppt',
+                  icon: Icons.waves,
+                ),
+              ),
             ],
-          ),
-          const SizedBox(height: 18),
-          Card(
-            child: ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.lightbulb_outline)),
-              title: const Text('Today’s Tip'),
-              subtitle: const Text('Maintain suitable dissolved oxygen and monitor pond behavior regularly.'),
-              trailing: TextButton(onPressed: () {}, child: const Text('View')),
-            ),
           ),
         ],
       ),
@@ -276,316 +349,412 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class QuickCard extends StatelessWidget {
+/* ---------------- ACTION CARD ---------------- */
+
+class ActionCard extends StatelessWidget {
   final IconData icon;
-  final String label;
-  const QuickCard(this.icon, this.label, {super.key});
+  final String title;
+  final VoidCallback onTap;
+
+  const ActionCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
-  Widget build(BuildContext context) => Card(
-    child: InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: () {},
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: primary, size: 28),
-          const SizedBox(height: 6),
-          Text(label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-        ],
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(15),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: primary,
+                size: 35,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
+/* ---------------- METRIC CARD ---------------- */
+
 class MetricCard extends StatelessWidget {
-  final String title, value;
+  final String title;
+  final String value;
   final IconData icon;
-  const MetricCard(this.title, this.value, this.icon, {super.key});
+
+  const MetricCard({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.icon,
+  });
 
   @override
-  Widget build(BuildContext context) => Expanded(
-    child: Card(
+  Widget build(BuildContext context) {
+    return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             Icon(icon, color: teal),
-            const SizedBox(height: 5),
-            Text(title, style: const TextStyle(fontSize: 12)),
-            const SizedBox(height: 2),
-            Text(value, style: const TextStyle(fontWeight: FontWeight.w800)),
+            const SizedBox(height: 7),
+            Text(title),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
-class SectionTitle extends StatelessWidget {
-  final String text;
-  const SectionTitle(this.text, {super.key});
-  @override
-  Widget build(BuildContext context) => Text(text, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800));
-}
+/* ---------------- PRODUCTS ---------------- */
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
-  static const products = [
-    ['Marine 6G', 'Liquid Minerals', Icons.science],
-    ['Vibrio Shield', 'Vibrio Management', Icons.shield],
-    ['Marine ProTab', 'Probiotic Tablets', Icons.medication],
-    ['Marine Volt-X', 'Growth Support', Icons.trending_up],
-    ['Bio Sludge-X', 'Sludge Management', Icons.layers],
-    ['OXYTAB+', 'Oxygen Support', Icons.bubble_chart],
+  final products = const [
+    ['Marine 6G', 'Liquid Minerals'],
+    ['Marine Vibrio Shield', 'Vibrio Control'],
+    ['Marine ProTab', 'Probiotic Tablets'],
+    ['Marine Volt-X', 'Growth Support'],
+    ['Bio Sludge-X', 'Sludge Control'],
+    ['OXYTAB+', 'Oxygen Support'],
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Marine Products'),
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+
+          return Card(
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ListTile(
+              leading: const CircleAvatar(
+                backgroundColor: Color(0xFFE0F5FA),
+                child: Icon(
+                  Icons.inventory_2,
+                  color: primary,
+                ),
+              ),
+              title: Text(
+                product[0],
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              subtitle: Text(product[1]),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProductDetailsScreen(
+                      name: product[0],
+                      category: product[1],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/* ---------------- PRODUCT DETAILS ---------------- */
+
+class ProductDetailsScreen extends StatelessWidget {
+  final String name;
+  final String category;
+
+  const ProductDetailsScreen({
+    super.key,
+    required this.name,
+    required this.category,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Product Details'),
+      ),
+      body: ListView(
         padding: const EdgeInsets.all(18),
         children: [
-          const Text('Products', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900)),
-          const SizedBox(height: 12),
-          TextField(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              hintText: 'Search products...',
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+          Container(
+            height: 220,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [primary, teal],
+              ),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.inventory_2,
+                color: Colors.white,
+                size: 100,
+              ),
             ),
           ),
-          const SizedBox(height: 14),
-          ...products.map((p) => Card(
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: primary.withOpacity(.1),
-                child: Icon(p[2] as IconData, color: primary),
-              ),
-              title: Text(p[0] as String, style: const TextStyle(fontWeight: FontWeight.w800)),
-              subtitle: Text(p[1] as String),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.push(context, MaterialPageRoute(
-                builder: (_) => ProductDetails(name: p[0] as String, subtitle: p[1] as String),
-              )),
+          const SizedBox(height: 20),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w900,
             ),
-          )),
+          ),
+          Text(
+            category,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 25),
+          const Text(
+            'Product Information',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Product description, benefits, dosage, application method, pack size and technical information will be displayed here.',
+          ),
+          const SizedBox(height: 25),
+          const Text(
+            'Application',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Follow the product label and technical team recommendations for correct usage.',
+          ),
         ],
       ),
     );
   }
 }
 
-class ProductDetails extends StatelessWidget {
-  final String name, subtitle;
-  const ProductDetails({super.key, required this.name, required this.subtitle});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Product Details')),
-    body: ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        Container(
-          height: 210,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [primary, teal]),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: const Center(child: Icon(Icons.inventory_2, color: Colors.white, size: 100)),
-        ),
-        const SizedBox(height: 18),
-        Text(name, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900)),
-        Text(subtitle, style: const TextStyle(color: Colors.grey)),
-        const SizedBox(height: 18),
-        const SectionTitle('About this product'),
-        const SizedBox(height: 8),
-        const Text('Product information, usage guidance, application method and technical notes can be maintained here by the Marine Aqua Tech admin team.'),
-        const SizedBox(height: 18),
-        const SectionTitle('Application'),
-        const SizedBox(height: 8),
-        const Text('Follow the product label and technical team recommendations for the correct application and dosage.'),
-        const SizedBox(height: 22),
-        FilledButton.icon(onPressed: () {}, icon: const Icon(Icons.play_circle), label: const Text('Watch Application Video')),
-      ],
-    ),
-  );
-}
+/* ---------------- PONDS ---------------- */
 
 class PondsScreen extends StatelessWidget {
   const PondsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Ponds'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const AddPondScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          pond(context, 'Pond 1'),
+          pond(context, 'Pond 2'),
+          pond(context, 'Pond 3'),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AddPondScreen(),
+            ),
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Add Pond'),
+      ),
+    );
+  }
+
+  Widget pond(BuildContext context, String name) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: const CircleAvatar(
+          child: Icon(Icons.water),
+        ),
+        title: Text(
+          name,
+          style: const TextStyle(
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        subtitle: const Text(
+          '2.5 Acres • Vannamei • Active',
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const WaterTestScreen(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/* ---------------- ADD POND ---------------- */
+
+class AddPondScreen extends StatelessWidget {
+  const AddPondScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add New Pond'),
+      ),
+      body: ListView(
         padding: const EdgeInsets.all(18),
         children: [
-          Row(
-            children: [
-              const Expanded(child: Text('My Ponds', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900))),
-              FilledButton.icon(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AddPondScreen())),
-                icon: const Icon(Icons.add),
-                label: const Text('Add Pond'),
-              ),
-            ],
+          field('Pond Name', 'Pond 1'),
+          field('Pond Size', '2.5 Acres'),
+          field('Stocking Date', 'DD/MM/YYYY'),
+          field('PL Count', '1,00,000'),
+          field('Species', 'Vannamei'),
+          field('Water Source', 'Borewell / Canal'),
+          const SizedBox(height: 10),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Save Pond'),
           ),
-          const SizedBox(height: 12),
-          ...['Pond 1', 'Pond 2', 'Pond 3'].map((name) => Card(
-            child: ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.water)),
-              title: Text(name, style: const TextStyle(fontWeight: FontWeight.w800)),
-              subtitle: const Text('2.5 Acres • Vannamei • Active'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WaterParametersScreen())),
-            ),
-          )),
+        ],
+      ),
+    );
+  }
+
+  Widget field(String label, String hint) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: TextField(
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/* ---------------- WATER TEST ---------------- */
+
+class WaterTestScreen extends StatelessWidget {
+  const WaterTestScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Water Parameters'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(18),
+        children: const [
+          MetricCard(
+            title: 'pH',
+            value: '7.8',
+            icon: Icons.science,
+          ),
+          MetricCard(
+            title: 'DO',
+            value: '5.6 ppm',
+            icon: Icons.bubble_chart,
+          ),
+          MetricCard(
+            title: 'Salinity',
+            value: '18 ppt',
+            icon: Icons.waves,
+          ),
+          MetricCard(
+            title: 'Temperature',
+            value: '29°C',
+            icon: Icons.thermostat,
+          ),
+          MetricCard(
+            title: 'Alkalinity',
+            value: '120 ppm',
+            icon: Icons.account_tree,
+          ),
+          MetricCard(
+            title: 'Ammonia',
+            value: '0.02 ppm',
+            icon: Icons.science_outlined,
+          ),
         ],
       ),
     );
   }
 }
 
-class AddPondScreen extends StatelessWidget {
-  const AddPondScreen({super.key});
+/* ---------------- POND DIARY ---------------- */
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Add New Pond')),
-    body: ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const Field(label: 'Pond Name', hint: 'e.g. Pond 1'),
-        const Field(label: 'Pond Size (Acres)', hint: 'e.g. 2.5'),
-        const Field(label: 'Stocking Date', hint: 'Select date'),
-        const Field(label: 'PL Count', hint: 'e.g. 1,00,000'),
-        const Field(label: 'Species', hint: 'Vannamei'),
-        const Field(label: 'Water Source', hint: 'Borewell / Canal / Other'),
-        const Field(label: 'Remarks', hint: 'Enter remarks'),
-        const SizedBox(height: 8),
-        FilledButton(onPressed: () => Navigator.pop(context), child: const Text('Save Pond')),
-      ],
-    ),
-  );
-}
-
-class Field extends StatelessWidget {
-  final String label, hint;
-  const Field({super.key, required this.label, required this.hint});
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 14),
-    child: TextField(
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-      ),
-    ),
-  );
-}
-
-class WaterParametersScreen extends StatelessWidget {
-  const WaterParametersScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Water Parameters')),
-    body: ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const Row(
-          children: [
-            Expanded(child: MetricCard('pH', '7.8', Icons.science)),
-            Expanded(child: MetricCard('DO', '5.6 ppm', Icons.bubble_chart)),
-          ],
-        ),
-        const Row(
-          children: [
-            Expanded(child: MetricCard('Salinity', '18 ppt', Icons.waves)),
-            Expanded(child: MetricCard('Temp', '29°C', Icons.thermostat)),
-          ],
-        ),
-        const Row(
-          children: [
-            Expanded(child: MetricCard('Alkalinity', '120 ppm', Icons.account_tree)),
-            Expanded(child: MetricCard('Ammonia', '0.02 ppm', Icons.science_outlined)),
-          ],
-        ),
-        const SizedBox(height: 12),
-        FilledButton.icon(onPressed: () {}, icon: const Icon(Icons.save), label: const Text('Save Record')),
-        TextButton.icon(onPressed: () {}, icon: const Icon(Icons.show_chart), label: const Text('View History')),
-      ],
-    ),
-  );
-}
-
-class SupportScreen extends StatelessWidget {
-  const SupportScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) => SafeArea(
-    child: ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const Text('Technical Support', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900)),
-        const SizedBox(height: 16),
-        SupportTile(Icons.chat, 'Chat with Expert', 'Get instant help from our technical team'),
-        SupportTile(Icons.call, 'Call Support', 'Connect with a technical officer'),
-        SupportTile(Icons.camera_alt, 'Send Photo / Query', 'Upload pond images and ask a question'),
-        SupportTile(Icons.video_call, 'Video Consultation', 'Schedule a video call'),
-        SupportTile(Icons.help_outline, 'FAQ', 'Common questions and answers'),
-      ],
-    ),
-  );
-}
-
-class SupportTile extends StatelessWidget {
-  final IconData icon;
-  final String title, subtitle;
-  const SupportTile(this.icon, this.title, this.subtitle, {super.key});
-  @override
-  Widget build(BuildContext context) => Card(
-    child: ListTile(
-      leading: CircleAvatar(child: Icon(icon)),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () {},
-    ),
-  );
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-  @override
-  Widget build(BuildContext context) => SafeArea(
-    child: ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const CircleAvatar(radius: 42, child: Icon(Icons.person, size: 42)),
-        const SizedBox(height: 10),
-        const Center(child: Text('Farmer', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900))),
-        const Center(child: Text('+91 XXXXX XXXXX')),
-        const SizedBox(height: 20),
-        ...[
-          ['My Ponds', Icons.water],
-          ['My Orders', Icons.shopping_bag],
-          ['Notifications', Icons.notifications],
-          ['App Settings', Icons.settings],
-          ['Help & Support', Icons.help],
-          ['About Marine Aqua Tech', Icons.info_outline],
-        ].map((x) => Card(
-          child: ListTile(
-            leading: Icon(x[1] as IconData, color: primary),
-            title: Text(x[0] as String),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-        )),
-      ],
-    ),
-  );
-}
+class PondDiaryScreen extends StatelessWidget
